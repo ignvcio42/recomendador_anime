@@ -1,162 +1,251 @@
 "use client";
 
-import { Container, Title, Text, Stack, Tabs, Paper, Badge, Group, Divider } from "@mantine/core";
-import { IconDice5, IconMoodSmile, IconList, IconBrain } from "@tabler/icons-react";
+import { Container, Stack, Tabs, useMantineTheme } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { IconSparkles, IconMoodHeart, IconStars, IconRobot } from "@tabler/icons-react";
 import { RandomAnime } from "./_components/random-anime";
 import { MoodRecommendation } from "./_components/mood-recommendation";
 import { SimilarRecommendation } from "./_components/similar-recommendation";
 import { AIRecommendation } from "./_components/ai-recommendation";
+import { Navbar } from "./_components/navbar";
+import { Footer } from "./_components/footer";
 
 export default function HomePage() {
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+
   return (
-    <Container size="xl" py="xl">
-      <Stack gap="xl">
-        {/* Header */}
-        <Paper shadow="xs" p="xl" radius="md" withBorder>
-          <Stack gap="md">
-            <Group justify="space-between" wrap="wrap">
-              <div>
-                <Title order={1} size="h1">
-                  🎌 Recomendador de Anime
-                </Title>
-                <Text size="lg" c="dimmed" mt="xs">
-                  Sistema inteligente de recomendación con múltiples métodos
-                </Text>
-              </div>
-              <Badge size="lg" variant="gradient" gradient={{ from: "blue", to: "cyan" }}>
-                T3 Stack
-              </Badge>
-            </Group>
-            
-            <Divider />
-            
-            <Text size="sm" c="dimmed">
-              Explora diferentes formas de descubrir tu próximo anime favorito: desde recomendaciones
-              aleatorias hasta sistemas de IA avanzados.
-            </Text>
-          </Stack>
-        </Paper>
-
-        {/* Tabs con las 4 funcionalidades */}
-        <Tabs defaultValue="random" variant="pills" radius="md">
-          <Tabs.List grow>
-            <Tabs.Tab
-              value="random"
-              leftSection={<IconDice5 size={18} />}
+    <>
+      <Navbar />
+      
+      <Container size="xl" py="xl">
+        <Stack gap="xl">
+          <Tabs 
+            defaultValue="random" 
+            variant="pills" 
+            radius="xl"
+          >
+            <Tabs.List
+              style={{
+                background: "linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)",
+                padding: isMobile ? "0.75rem 0.5rem" : "1rem",
+                borderRadius: "1rem",
+                border: "2px solid rgba(118, 75, 162, 0.2)",
+                display: "flex",
+                gap: isMobile ? "0.5rem" : "0.75rem",
+                width: "100%",
+              }}
             >
-              <Group gap="xs">
-                <Text size="sm" fw={500}>Aleatorio</Text>
-                <Badge size="xs" color="green" variant="filled">Activo</Badge>
-              </Group>
-            </Tabs.Tab>
+              <Tabs.Tab
+                value="random"
+                leftSection={<IconSparkles size={isMobile ? 16 : 18} />}
+                style={{
+                  transition: "all 0.3s ease",
+                  fontSize: isMobile ? "0.7rem" : undefined,
+                  padding: isMobile ? "0.5rem 0.25rem" : undefined,
+                  flex: isMobile ? "1" : undefined,
+                  minWidth: 0,
+                  whiteSpace: isMobile ? "nowrap" : undefined,
+                }}
+              >
+                Aleatorio
+              </Tabs.Tab>
 
-            <Tabs.Tab
-              value="mood"
-              leftSection={<IconMoodSmile size={18} />}
-            >
-              <Group gap="xs">
-                <Text size="sm" fw={500}>Por Ánimo</Text>
-                <Badge size="xs" color="green" variant="filled">Activo</Badge>
-              </Group>
-            </Tabs.Tab>
+              <Tabs.Tab
+                value="mood"
+                leftSection={<IconMoodHeart size={isMobile ? 16 : 18} />}
+                style={{
+                  transition: "all 0.3s ease",
+                  fontSize: isMobile ? "0.7rem" : undefined,
+                  padding: isMobile ? "0.5rem 0.25rem" : undefined,
+                  flex: isMobile ? "1" : undefined,
+                  minWidth: 0,
+                  whiteSpace: isMobile ? "nowrap" : undefined,
+                }}
+              >
+                Ánimo
+              </Tabs.Tab>
 
-            <Tabs.Tab
-              value="similar"
-              leftSection={<IconList size={18} />}
-            >
-              <Group gap="xs">
-                <Text size="sm" fw={500}>Por Vistos</Text>
-                <Badge size="xs" color="green" variant="filled">Activo</Badge>
-              </Group>
-            </Tabs.Tab>
+              <Tabs.Tab
+                value="similar"
+                leftSection={<IconStars size={isMobile ? 16 : 18} />}
+                style={{
+                  transition: "all 0.3s ease",
+                  fontSize: isMobile ? "0.7rem" : undefined,
+                  padding: isMobile ? "0.5rem 0.25rem" : undefined,
+                  flex: isMobile ? "1" : undefined,
+                  minWidth: 0,
+                  whiteSpace: isMobile ? "nowrap" : undefined,
+                }}
+              >
+                Favoritos
+              </Tabs.Tab>
 
-            <Tabs.Tab
-              value="ai"
-              leftSection={<IconBrain size={18} />}
-            >
-              <Group gap="xs">
-                <Text size="sm" fw={500}>IA Avanzada</Text>
-                <Badge size="xs" color="purple" variant="filled">Activo</Badge>
-              </Group>
-            </Tabs.Tab>
-          </Tabs.List>
+              <Tabs.Tab
+                value="ai"
+                leftSection={<IconRobot size={isMobile ? 16 : 18} />}
+                style={{
+                  transition: "all 0.3s ease",
+                  fontSize: isMobile ? "0.7rem" : undefined,
+                  padding: isMobile ? "0.5rem 0.25rem" : undefined,
+                  flex: isMobile ? "1" : undefined,
+                  minWidth: 0,
+                  whiteSpace: isMobile ? "nowrap" : undefined,
+                }}
+              >
+                IA
+              </Tabs.Tab>
+            </Tabs.List>
 
-          {/* Fase 1: Random (Jikan) - ACTIVA */}
-          <Tabs.Panel value="random" pt="xl">
-            <Stack gap="md">
-              <div>
-                <Title order={2}>🎲 Recomendación Aleatoria</Title>
-                <Text size="sm" c="dimmed" mt="xs">
-                  Descubre animes al azar de la base de datos de MyAnimeList
-                </Text>
-                <Group gap="xs" mt="sm">
-                  <Badge variant="light" color="blue">Jikan API</Badge>
-                  <Badge variant="light" color="green">✓ Implementado</Badge>
-                  <Badge variant="light" color="gray">Sin caché</Badge>
-                </Group>
+            {/* Random */}
+            <Tabs.Panel value="random" pt="xl">
+              <div
+                style={{
+                  animation: "fadeIn 0.5s ease-in",
+                }}
+              >
+                <RandomAnime />
               </div>
-              <RandomAnime />
-            </Stack>
-          </Tabs.Panel>
+            </Tabs.Panel>
 
-          {/* Fase 2: Mood (AniList) - ACTIVA */}
-          <Tabs.Panel value="mood" pt="xl">
-            <Stack gap="md">
-              <div>
-                <Title order={2}>😊 Recomendación por Estado de Ánimo</Title>
-                <Text size="sm" c="dimmed" mt="xs">
-                  Encuentra animes que coincidan con tu mood actual
-                </Text>
-                <Group gap="xs" mt="sm">
-                  <Badge variant="light" color="blue">AniList GraphQL</Badge>
-                  <Badge variant="light" color="green">✓ Implementado</Badge>
-                  <Badge variant="light" color="gray">Sin caché</Badge>
-                </Group>
+            {/* Mood */}
+            <Tabs.Panel value="mood" pt="xl">
+              <div
+                style={{
+                  animation: "fadeIn 0.5s ease-in",
+                }}
+              >
+                <MoodRecommendation />
               </div>
-              <MoodRecommendation />
-            </Stack>
-          </Tabs.Panel>
+            </Tabs.Panel>
 
-          {/* Fase 3: Similar (AniList) - ACTIVA */}
-          <Tabs.Panel value="similar" pt="xl">
-            <Stack gap="md">
-              <div>
-                <Title order={2}>📺 Recomendación por Animes Vistos</Title>
-                <Text size="sm" c="dimmed" mt="xs">
-                  Basado en animes que hayas visto (mínimo 2, máximo 10). Cuantos más agregues, más específica será la búsqueda.
-                </Text>
-                <Group gap="xs" mt="sm">
-                  <Badge variant="light" color="blue">AniList GraphQL</Badge>
-                  <Badge variant="light" color="green">✓ Implementado</Badge>
-                  <Badge variant="light" color="teal">Jaccard Similarity</Badge>
-                  <Badge variant="light" color="cyan">Campos dinámicos</Badge>
-                </Group>
+            {/* Similar */}
+            <Tabs.Panel value="similar" pt="xl">
+              <div
+                style={{
+                  animation: "fadeIn 0.5s ease-in",
+                }}
+              >
+                <SimilarRecommendation />
               </div>
-              <SimilarRecommendation />
-            </Stack>
-          </Tabs.Panel>
+            </Tabs.Panel>
 
-          {/* Fase 4: AI (Gemini) - ACTIVA */}
-          <Tabs.Panel value="ai" pt="xl">
-            <Stack gap="md">
-              <div>
-                <Title order={2}>🧠 Recomendación con IA</Title>
-                <Text size="sm" c="dimmed" mt="xs">
-                  Chat con un asistente especializado en anime. Pregunta lo que quieras: estilos, géneros, recomendaciones personalizadas.
-                </Text>
-                <Group gap="xs" mt="sm">
-                  <Badge variant="light" color="purple">Gemini API</Badge>
-                  <Badge variant="light" color="green">✓ Implementado</Badge>
-                  <Badge variant="light" color="violet">Chat interactivo</Badge>
-                </Group>
+            {/* AI */}
+            <Tabs.Panel value="ai" pt="xl">
+              <div
+                style={{
+                  animation: "fadeIn 0.5s ease-in",
+                }}
+              >
+                <AIRecommendation />
               </div>
-              <AIRecommendation />
-            </Stack>
-          </Tabs.Panel>
-        </Tabs>
+            </Tabs.Panel>
+          </Tabs>
+        </Stack>
+      </Container>
 
-        {/* Footer Info */}
-      </Stack>
-    </Container>
+      <Footer />
+
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+
+        .mantine-Card-root {
+          transition: box-shadow 0.2s ease;
+        }
+
+        .mantine-Card-root:hover {
+          box-shadow: 0 4px 12px rgba(118, 75, 162, 0.15) !important;
+        }
+
+        .mantine-Button-root {
+          transition: all 0.2s ease;
+        }
+
+        .mantine-Button-root:hover {
+          opacity: 0.9;
+        }
+
+        .mantine-Tabs-tab[data-active] {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+          color: white !important;
+          transform: scale(1.05);
+          box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        .mantine-Tabs-tab {
+          font-weight: 500;
+        }
+
+        .mantine-Tabs-tab:hover:not([data-active]) {
+          background: rgba(118, 75, 162, 0.08);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+          .mantine-Container-root {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+          }
+
+          .mantine-Tabs-list {
+            width: 100% !important;
+            display: flex !important;
+            justify-content: space-between !important;
+          }
+
+          .mantine-Tabs-tab {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-direction: row !important;
+            gap: 0.25rem !important;
+          }
+
+          .mantine-SimpleGrid-root {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .mantine-SimpleGrid-root {
+            grid-template-columns: 1fr !important;
+          }
+          
+          .mantine-Container-root {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+          }
+        }
+      `}</style>
+    </>
   );
 }

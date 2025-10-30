@@ -165,9 +165,9 @@ export function AIRecommendation() {
                 </Text>
               </div>
               <Stack gap="xs" mt="md">
-                <Badge variant="light" color="violet">💬 &quot;Quiero algo con estética de Violet Evergarden&quot;</Badge>
-                <Badge variant="light" color="blue">🔍 &quot;Animes similares a Death Note&quot;</Badge>
-                <Badge variant="light" color="pink">✨ &quot;Recomiéndame un anime de acción con buena animación&quot;</Badge>
+                <Badge variant="light" color="violet">&quot;Quiero algo con estética de Violet Evergarden&quot;</Badge>
+                <Badge variant="light" color="blue">&quot;Animes similares a Death Note&quot;</Badge>
+                <Badge variant="light" color="pink">&quot;Recomiéndame un anime de acción con buena animación&quot;</Badge>
               </Stack>
             </Stack>
           ) : (

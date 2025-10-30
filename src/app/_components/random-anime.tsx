@@ -1,6 +1,7 @@
 "use client";
 
-import { Card, Image, Text, Badge, Button, Group, Stack, Loader, Alert, Title } from "@mantine/core";
+import { Card, Image, Text, Badge, Button, Group, Stack, Loader, Alert, Title, useMantineTheme } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconDice5, IconAlertCircle, IconStar, IconCalendar, IconDeviceTv, IconExternalLink } from "@tabler/icons-react";
 import { api } from "~/trpc/react";
 
@@ -8,6 +9,9 @@ import { api } from "~/trpc/react";
  * Componente de Mantine UI para anime random
  */
 export function RandomAnime() {
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  
   const {
     data: anime,
     isLoading,
@@ -56,105 +60,199 @@ export function RandomAnime() {
   }
 
   return (
-    <Card shadow="md" padding="lg" radius="md" withBorder>
-      <Group align="flex-start" gap="lg" wrap="nowrap">
-        {anime.imageUrl && (
-          <Image
-            src={anime.imageUrl}
-            alt={anime.title.default}
-            width={200}
-            height={280}
-            radius="md"
-            fit="cover"
-          />
+    <Card shadow="md" padding={isMobile ? "md" : "lg"} radius="md" withBorder>
+      <Stack gap="lg">
+        {/* Imagen centrada en mobile, a la izquierda en desktop */}
+        {isMobile ? (
+          <Stack gap="lg">
+            {anime.imageUrl && (
+              <Image
+                src={anime.imageUrl}
+                alt={anime.title.default}
+                height={350}
+                radius="md"
+                fit="cover"
+                style={{ margin: "0 auto" }}
+              />
+            )}
+
+            <Stack gap="md">
+              <div>
+                <Title order={2} style={{ wordBreak: "break-word" }}>
+                  {anime.title.default}
+                </Title>
+                
+                {anime.title.english && anime.title.english !== anime.title.default && (
+                  <Text size="lg" c="dimmed" mt={4} style={{ wordBreak: "break-word" }}>
+                    {anime.title.english}
+                  </Text>
+                )}
+                
+                {anime.title.native && (
+                  <Text size="sm" c="dimmed" mt={2} style={{ wordBreak: "break-word" }}>
+                    {anime.title.native}
+                  </Text>
+                )}
+              </div>
+
+              <Group gap="xs" wrap="wrap">
+                {anime.score && (
+                  <Badge
+                    leftSection={<IconStar size={14} />}
+                    variant="gradient"
+                    gradient={{ from: "yellow", to: "orange" }}
+                  >
+                    {anime.score}
+                  </Badge>
+                )}
+                {anime.year && (
+                  <Badge
+                    leftSection={<IconCalendar size={14} />}
+                    variant="light"
+                    color="blue"
+                  >
+                    {anime.year}
+                  </Badge>
+                )}
+                {anime.episodes && (
+                  <Badge
+                    leftSection={<IconDeviceTv size={14} />}
+                    variant="light"
+                    color="grape"
+                  >
+                    {anime.episodes} eps
+                  </Badge>
+                )}
+              </Group>
+
+              {anime.rating && (
+                <Text size="sm" c="dimmed">
+                  {anime.rating}
+                </Text>
+              )}
+
+              {anime.synopsis && (
+                <Text size="sm" lineClamp={6}>
+                  {anime.synopsis}
+                </Text>
+              )}
+
+              {anime.url && (
+                <Button
+                  component="a"
+                  href={anime.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="subtle"
+                  rightSection={<IconExternalLink size={16} />}
+                  fullWidth
+                >
+                  Ver en MyAnimeList
+                </Button>
+              )}
+            </Stack>
+          </Stack>
+        ) : (
+          <Group align="flex-start" gap="lg" wrap="nowrap">
+            {anime.imageUrl && (
+              <Image
+                src={anime.imageUrl}
+                alt={anime.title.default}
+                width={200}
+                height={280}
+                radius="md"
+                fit="cover"
+              />
+            )}
+
+            <Stack flex={1} gap="md">
+              <div>
+                <Title order={2}>{anime.title.default}</Title>
+                
+                {anime.title.english && anime.title.english !== anime.title.default && (
+                  <Text size="lg" c="dimmed" mt={4}>
+                    {anime.title.english}
+                  </Text>
+                )}
+                
+                {anime.title.native && (
+                  <Text size="sm" c="dimmed" mt={2}>
+                    {anime.title.native}
+                  </Text>
+                )}
+              </div>
+
+              <Group gap="xs">
+                {anime.score && (
+                  <Badge
+                    leftSection={<IconStar size={14} />}
+                    variant="gradient"
+                    gradient={{ from: "yellow", to: "orange" }}
+                  >
+                    {anime.score}
+                  </Badge>
+                )}
+                {anime.year && (
+                  <Badge
+                    leftSection={<IconCalendar size={14} />}
+                    variant="light"
+                    color="blue"
+                  >
+                    {anime.year}
+                  </Badge>
+                )}
+                {anime.episodes && (
+                  <Badge
+                    leftSection={<IconDeviceTv size={14} />}
+                    variant="light"
+                    color="grape"
+                  >
+                    {anime.episodes} eps
+                  </Badge>
+                )}
+              </Group>
+
+              {anime.rating && (
+                <Text size="sm" c="dimmed">
+                  {anime.rating}
+                </Text>
+              )}
+
+              {anime.synopsis && (
+                <Text size="sm" lineClamp={4}>
+                  {anime.synopsis}
+                </Text>
+              )}
+
+              {anime.url && (
+                <Button
+                  component="a"
+                  href={anime.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="subtle"
+                  rightSection={<IconExternalLink size={16} />}
+                  w="fit-content"
+                >
+                  Ver en MyAnimeList
+                </Button>
+              )}
+            </Stack>
+          </Group>
         )}
 
-        <Stack flex={1} gap="md">
-          <div>
-            <Title order={2}>{anime.title.default}</Title>
-            
-            {anime.title.english && anime.title.english !== anime.title.default && (
-              <Text size="lg" c="dimmed" mt={4}>
-                {anime.title.english}
-              </Text>
-            )}
-            
-            {anime.title.native && (
-              <Text size="sm" c="dimmed" mt={2}>
-                {anime.title.native}
-              </Text>
-            )}
-          </div>
-
-          <Group gap="xs">
-            {anime.score && (
-              <Badge
-                leftSection={<IconStar size={14} />}
-                variant="gradient"
-                gradient={{ from: "yellow", to: "orange" }}
-              >
-                {anime.score}
-              </Badge>
-            )}
-            {anime.year && (
-              <Badge
-                leftSection={<IconCalendar size={14} />}
-                variant="light"
-                color="blue"
-              >
-                {anime.year}
-              </Badge>
-            )}
-            {anime.episodes && (
-              <Badge
-                leftSection={<IconDeviceTv size={14} />}
-                variant="light"
-                color="grape"
-              >
-                {anime.episodes} eps
-              </Badge>
-            )}
-          </Group>
-
-          {anime.rating && (
-            <Text size="sm" c="dimmed">
-              {anime.rating}
-            </Text>
-          )}
-
-          {anime.synopsis && (
-            <Text size="sm" lineClamp={4}>
-              {anime.synopsis}
-            </Text>
-          )}
-
-          {anime.url && (
-            <Button
-              component="a"
-              href={anime.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="subtle"
-              rightSection={<IconExternalLink size={16} />}
-              w="fit-content"
-            >
-              Ver en MyAnimeList
-            </Button>
-          )}
-        </Stack>
-      </Group>
-
-      <Button
-        fullWidth
-        mt="md"
-        leftSection={<IconDice5 size={20} />}
-        onClick={() => refetch()}
-        disabled={isLoading}
-        variant="gradient"
-        gradient={{ from: "blue", to: "cyan" }}
-      >
-        Obtener otro anime aleatorio
-      </Button>
+        <Button
+          fullWidth
+          mt="md"
+          leftSection={<IconDice5 size={20} />}
+          onClick={() => refetch()}
+          disabled={isLoading}
+          variant="gradient"
+          gradient={{ from: "blue", to: "cyan" }}
+        >
+          {isMobile ? "Otro anime" : "Obtener otro anime aleatorio"}
+        </Button>
+      </Stack>
     </Card>
   );
 }

@@ -8,7 +8,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Recomendador de Anime",
+  title: "AniReko",
   description: "Sistema de recomendación de anime con múltiples métodos",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
@@ -21,7 +21,12 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body>
+      <body
+        style={{
+          background: "linear-gradient(180deg, #f8f9ff 0%, #fff5f7 100%)",
+          minHeight: "100vh",
+        }}
+      >
         <TRPCReactProvider>
           <Providers>{children}</Providers>
         </TRPCReactProvider>
