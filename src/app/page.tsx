@@ -76,7 +76,7 @@ export default function HomePage() {
             >
               <Group gap="xs">
                 <Text size="sm" fw={500}>IA Avanzada</Text>
-                <Badge size="xs" color="yellow" variant="filled">Fase 4</Badge>
+                <Badge size="xs" color="purple" variant="filled">Activo</Badge>
               </Group>
             </Tabs.Tab>
           </Tabs.List>
@@ -136,18 +136,18 @@ export default function HomePage() {
             </Stack>
           </Tabs.Panel>
 
-          {/* Fase 4: AI (Vector/LLM) - PLACEHOLDER */}
+          {/* Fase 4: AI (Gemini) - ACTIVA */}
           <Tabs.Panel value="ai" pt="xl">
             <Stack gap="md">
               <div>
                 <Title order={2}>🧠 Recomendación con IA</Title>
                 <Text size="sm" c="dimmed" mt="xs">
-                  Encuentra animes similares usando embeddings y LLM
+                  Chat con un asistente especializado en anime. Pregunta lo que quieras: estilos, géneros, recomendaciones personalizadas.
                 </Text>
                 <Group gap="xs" mt="sm">
-                  <Badge variant="light" color="purple">Vector DB</Badge>
-                  <Badge variant="light" color="pink">LLM</Badge>
-                  <Badge variant="light" color="yellow">⏳ Próximamente</Badge>
+                  <Badge variant="light" color="purple">Gemini API</Badge>
+                  <Badge variant="light" color="green">✓ Implementado</Badge>
+                  <Badge variant="light" color="violet">Chat interactivo</Badge>
                 </Group>
               </div>
               <AIRecommendation />

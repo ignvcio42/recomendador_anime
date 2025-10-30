@@ -10,6 +10,7 @@ import {
   AniListError,
   type AniListMedia,
 } from "~/lib/anilist";
+import { askGemini, GeminiError, isValidMessage, type ChatMessage } from "~/lib/gemini";
 import {
   mapJikanToAnimeBase,
   mapAniListToMoodResult,
@@ -328,6 +329,77 @@ export const animeRouter = createTRPCRouter({
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
             message: "Failed to generate recommendations",
+            cause: error,
+          });
+        }
+      }),
+  }),
+
+  // ============================================================================
+  // FASE 4: AI Recommendations (Gemini)
+  // ============================================================================
+
+  ai: createTRPCRouter({
+    /**
+     * Chat con IA especializada en anime usando Gemini
+     * @param message - Mensaje del usuario
+     * @param history - Historial de conversación (opcional)
+     * @returns Respuesta de la IA
+     */
+    chat: publicProcedure
+      .input(
+        z.object({
+          message: z.string().min(1).max(1000),
+          history: z.array(
+            z.object({
+              role: z.enum(["user", "assistant"]),
+              content: z.string(),
+            })
+          ).optional(),
+        }),
+      )
+      .mutation(async ({ input }): Promise<{ response: string }> => {
+        try {
+          // Validar mensaje
+          if (!isValidMessage(input.message)) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: "El mensaje debe tener entre 1 y 1000 caracteres",
+            });
+          }
+
+          // Llamar a Gemini
+          const response = await askGemini(
+            input.message,
+            input.history as ChatMessage[] ?? [],
+          );
+
+          return { response };
+        } catch (error) {
+          if (error instanceof GeminiError) {
+            // Errores específicos de Gemini
+            if (error.statusCode === 408) {
+              throw new TRPCError({
+                code: "TIMEOUT",
+                message: error.message,
+              });
+            }
+            
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: error.message,
+              cause: error,
+            });
+          }
+
+          if (error instanceof TRPCError) {
+            throw error;
+          }
+
+          console.error("[anime.ai.chat] Unexpected error:", error);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Error al comunicarse con la IA",
             cause: error,
           });
         }
